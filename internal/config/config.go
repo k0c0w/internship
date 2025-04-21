@@ -18,6 +18,7 @@ type (
 	Config struct {
 		PostgresConfig `mapstructure:"postgres"`
 		HTTPConfig     `mapstructure:"http-profile"`
+		GRPCConfig     `mapstructure:"grpc-profile"`
 		AuthConfig     `mapstructure:"auth"`
 	}
 
@@ -45,6 +46,10 @@ type (
 		TokenTTL time.Duration `mapstructure:"tokenTTL"`
 		Sign     string        `mapstructure:"sign"`
 		Issuer   string        `mapstructure:"issuer"`
+	}
+
+	GRPCConfig struct {
+		Port int `mapstructure:"port"`
 	}
 )
 

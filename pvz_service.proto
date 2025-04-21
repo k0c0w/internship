@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package pvz_service;
+option go_package = "./grpc-profile";
+
+import "google/protobuf/timestamp.proto";
+
+service PVZReportService {
+    rpc GetPVZReport(PVZReportRequest) returns (PVZReportResponse);
+}
+
+message PVZReportRequest {
+    int32 page = 1;
+    int32 limit = 2;
+    google.protobuf.Timestamp start_date = 3;
+    google.protobuf.Timestamp end_date = 4; 
+}
+
+message PVZReportResponse {
+    string error = 1;
+    PVZReportAggregateList reports = 2;
+}
+
+message PVZReportAggregateList {
+    repeated PVZReportAggregate values = 1;
+}
+
+message ReceptionList {
+    repeated Reception values = 1;
+}
+
+message PVZReportAggregate {
+    PVZ pvz = 1;
+    ReceptionList receptions = 2;
+}
+
+message PVZ {
+    string id = 1;
+    google.protobuf.Timestamp creation_time_utc = 2;
+    City city = 3;
+}
+
+message City {
+    string name = 1;
+}
+
+message ProductList {
+    repeated Product values = 1;
+}
+
+message Reception {
+    ReceptionInfo reception = 1;
+    ProductList products = 2;
+}
+
+message ReceptionInfo {
+    string id = 1;
+    string pvz_id = 2;
+    google.protobuf.Timestamp creation_time_utc = 3;
+    string status = 4;
+}
+
+message Product {
+  string id = 1;
+  string reception_id = 2;
+  google.protobuf.Timestamp creation_time_utc = 3;
+  string category = 4;
+}

@@ -1,7 +1,8 @@
 package app
 
 import (
-	http "avito/internal/api/http"
+	grpc_profile "avito/internal/api/grpc-profile"
+	http_profile "avito/internal/api/http"
 	"avito/internal/config"
 	services "avito/internal/services"
 	"avito/internal/storage"
@@ -31,15 +32,31 @@ func Run(configPath string) {
 	jwtManager := jwt.NewJWTManager(cfg.AuthConfig.JWTConfig.Sign, cfg.AuthConfig.JWTConfig.Issuer, cfg.AuthConfig.JWTConfig.TokenTTL)
 	authService := services.NewAuthorizationService(*jwtManager, repositories.UserRepository)
 
-	deps := http.Dependencies{
+	httpDeps := http_profile.Dependencies{
 		AuthorizationService: authService,
 		JWTManager:           *jwtManager,
 		Repositories:         repositories,
 	}
-	httpServer := http.NewHTTPServer(deps, cfg.HTTPConfig)
+
+	grpcDeps := grpc_profile.Dependencies{
+		AuthorizationService:         authService,
+		PVZRepository:                repositories.PVZRepository,
+		PVZReportAggregateRepository: repositories.PVZReportAggregateRepository,
+		JWTManager:                   *jwtManager,
+	}
+
+	httpServer := http_profile.NewHTTPServer(httpDeps, cfg.HTTPConfig)
+	grpcServer := grpc_profile.NewGRPCServer(grpcDeps, cfg.GRPCConfig)
 
 	go func() {
 		err := httpServer.Start()
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}()
+
+	go func() {
+		err := grpcServer.Start()
 		if err != nil {
 			log.Fatalln(err)
 		}

@@ -1,5 +1,5 @@
-package: api
-output: internal/api/http/api.gen.go
+package: http_profile
+output: internal/api/http-profile/api.gen.go
 
 generate:
   strict-server: true

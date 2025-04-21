@@ -12,7 +12,13 @@ require (
 	github.com/spf13/viper v1.20.1
 )
 
-require github.com/alexedwards/argon2id v1.0.0
+require (
+	github.com/alexedwards/argon2id v1.0.0
+	google.golang.org/grpc v1.67.3
+	google.golang.org/protobuf v1.36.1
+)
+
+require google.golang.org/genproto/googleapis/rpc v0.0.0-20241223144023-3abc09e42ca8 // indirect
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
