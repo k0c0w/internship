@@ -1,0 +1,22 @@
+http-profile:
+  host: localhost
+  port: 8080
+  include-swagger: true
+postgres:
+  host: 'localhost'
+  port: 15432
+  connect-attempts: 3
+  connect-timeout: 5s
+  user: avito
+  password: avito
+  db: avito
+auth:
+  salt-length: 32
+  parallelism: 4
+  jwt:
+    tokenTTL: 30m
+    issuer: avito.ru
+    sign: supersign
+grpc-profile:
+  host: localhost
+  port: 3000
