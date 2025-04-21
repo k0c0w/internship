@@ -159,15 +159,14 @@ func (r *ReceptionInfo) RemoveLastProduct(ctx context.Context, products ProductR
 		return Product{}, errors.New(ReceptionIsEmptyError)
 	}
 
-	lastAddedProductIndex := 0
-	for i, product := range receptionProducts {
-		if product.CreationTimeUTC.Compare(receptionProducts[lastAddedProductIndex].CreationTimeUTC) > 0 {
-			lastAddedProductIndex = i
+	youngest := receptionProducts[0]
+	for _, product := range receptionProducts[1:] {
+		if product.CreationTimeUTC.UnixNano() > youngest.CreationTimeUTC.UnixNano() {
+			youngest = product
 		}
 	}
 
-	removedProduct = *receptionProducts[lastAddedProductIndex]
-
+	removedProduct = *youngest
 	err = products.Remove(ctx, removedProduct)
 
 	if err != nil {

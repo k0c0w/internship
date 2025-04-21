@@ -11,8 +11,6 @@ postgres:
   password: avito
   db: avito
 auth:
-  salt-length: 32
-  parallelism: 4
   jwt:
     tokenTTL: 30m
     issuer: avito.ru

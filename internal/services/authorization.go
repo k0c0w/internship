@@ -1,7 +1,6 @@
 package services
 
 import (
-	"avito/internal/config"
 	domain "avito/internal/domain"
 	jwt "avito/pkg/authorization"
 	"errors"
@@ -16,14 +15,12 @@ type (
 	authroizationServiceImpl struct {
 		userRepository domain.UserRepository
 		jwtManager     jwt.JWTManager
-		cfg            config.AuthConfig
 	}
 )
 
-func NewAuthorizationService(jwtManager jwt.JWTManager, userRepository domain.UserRepository, cfg config.AuthConfig) domain.AuthorizationService[jwt.JWT] {
+func NewAuthorizationService(jwtManager jwt.JWTManager, userRepository domain.UserRepository) domain.AuthorizationService[jwt.JWT] {
 	return authroizationServiceImpl{
 		userRepository: userRepository,
-		cfg:            cfg,
 		jwtManager:     jwtManager,
 	}
 }

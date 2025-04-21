@@ -29,7 +29,7 @@ func Run(configPath string) {
 
 	repositories := storage.NewRepositories(postgresClient)
 	jwtManager := jwt.NewJWTManager(cfg.AuthConfig.JWTConfig.Sign, cfg.AuthConfig.JWTConfig.Issuer, cfg.AuthConfig.JWTConfig.TokenTTL)
-	authService := services.NewAuthorizationService(*jwtManager, repositories.UserRepository, cfg.AuthConfig)
+	authService := services.NewAuthorizationService(*jwtManager, repositories.UserRepository)
 
 	deps := http.Dependencies{
 		AuthorizationService: authService,
